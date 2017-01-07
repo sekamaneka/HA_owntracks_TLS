@@ -28,10 +28,12 @@
     * `<client_name>.crt`
     * `<client_name>.csr`
     * `<client_name>.key`
-9. Now that we have generated all the certificates it's time to tell the mosquitto broker where they are. Following 3 entries are important. Edit the configuration file with `sudo gedit /etc/mosquitto/conf.d/mosquitto.conf` and append following 3 lines. 
- * `cafile /etc/mosquitto/new_certs/ca.crt`
- * `certfile /etc/mosquitto/new_certs/raspberrypi.crt`
- * `keyfile /etc/mosquitto/new_certs/raspberrypi.key`
+9. Now that we have generated all the certificates it's time to tell the mosquitto broker where they are. Following 3 entries are important. Edit the configuration file with `sudo gedit /etc/mosquitto/conf.d/mosquitto.conf` and append following 3 lines after deleting the 3 similar lines.
+ * `cafile /etc/mosquitto/certs/ca.crt`
+ * `certfile /etc/mosquitto/certs/<hostname>.crt`
+ * `keyfile /etc/mosquitto/certs/<hostname>.key`
+10. Now you just have to transfer the ca.crt file to your client of choice and TLS encryption is ready.
+ 
 
 `openssl pkcs12
   -export
