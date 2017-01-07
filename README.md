@@ -1,9 +1,16 @@
 # HA_owntracks_TLS
-1. Download a set of tools provided by Owntracks to setup the mqtt broker along with TLS. 
- * `git clone https://github.com/owntracks/tools.git`
-
 ### Depending on your configuration you may have to prepend sudo to all following commands.
-1. Copy the generate_CA script to the mosquitto config folder and edit it to include the `<hostname>` of your mqtt broker's server in `HOSTLIST=` in line 42. If you are using a raspberry pi the `<hostname>` will probably be raspberrypi. In any case it can be found by running this command `cat /etc/hosts`.
+1. Download a set of tools provided by Owntracks to setup the mqtt broker mosquitto along with TLS. 
+ * `git clone https://github.com/owntracks/tools.git`
+2. Change to the downloaded directory.
+ *  `cd tools/`
+3. Execute the setup script.
+ *  `sudo chmod +x mosquitto-setup.sh`
+ *  `sudo ./mosquitto-setup.sh`
+4. This will install a basic mosquitto configuration directory in /etc/mosquitto.
+5. The actual configuration file is in /etc/mosquitto/conf.d/mosquitto.conf. We will edit this later.
+
+1. Copy the generate_CA script to the mosquitto config folder and edit it to include the `<hostname>` of your mqtt broker's server in `HOSTLIST=` in line 42. If you are using a Raspberry Pi the `<hostname>` will probably be raspberrypi. In any case it can be found by running this command `cat /etc/hosts`.
  * `mkdir /etc/mosquitto/certs`
  * `cp -a ./owntracks/tools/TLS/generate_CA /etc/mosquitto/certs/`
  * `cd /etc/mosquitto/certs/`
