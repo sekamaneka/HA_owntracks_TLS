@@ -7,15 +7,15 @@
 3. Execute the setup script.
  *  `sudo chmod +x mosquitto-setup.sh`
  *  `sudo ./mosquitto-setup.sh`
-4. This will install a basic mosquitto configuration directory in /etc/mosquitto.
-5. The actual configuration file is in /etc/mosquitto/conf.d/mosquitto.conf. We will edit this later.
+4. This will install a basic mosquitto configuration directory in `/etc/mosquitto`.
+5. The actual configuration file is in `/etc/mosquitto/conf.d/mosquitto.conf`. We will edit this later.
 
-1. Copy the generate_CA script to the mosquitto config folder and edit it to include the `<hostname>` of your mqtt broker's server in `HOSTLIST=` in line 42. If you are using a Raspberry Pi the `<hostname>` will probably be raspberrypi. In any case it can be found by running this command `cat /etc/hosts`.
+6. Copy the generate_CA script to the mosquitto config folder and edit it to include the `<hostname>` of your mqtt broker's server in `HOSTLIST=` in line 42. If you are using a Raspberry Pi the `<hostname>` will probably be raspberrypi. In any case it can be found by running this command `cat /etc/hosts`.
  * `mkdir /etc/mosquitto/certs`
  * `cp -a ./owntracks/tools/TLS/generate_CA /etc/mosquitto/certs/`
  * `cd /etc/mosquitto/certs/`
  * `gedit generate_CA`
-2.  Now we are ready to start generating our certificates. The following command will generate 6 files. All files starting with ca will be your certificate authority that will be used to sign everything else and the files starting with `<hostname>` will be your server certificates.
+7.  Now we are ready to start generating our certificates. The following command will generate 6 files. All files starting with ca will be your certificate authority that will be used to sign everything else and the files starting with `<hostname>` will be your server certificates.
   * `./generate_CA <hostname>`
     * `ca.crt`
     * `ca.srl`
@@ -23,11 +23,15 @@
     * `<hostname>.crt`
     * `<hostname>.csr`
     * `<hostname>.key`
-3.  The following command will generate your `<client>` certificates. You can generate multiple, one for each client that will be connecting to your broker. They will be used to provide authentication. If you decide to skip this step the communication will be encrypted but not authenticated.
+8.  The following command will generate your `<client>` certificates. You can generate multiple, one for each client that will be connecting to your broker. They will be used to provide authentication. If you decide to skip this step the communication will be encrypted but not authenticated.
   * `./generate_CA client <client_name>`
     * `<client_name>.crt`
     * `<client_name>.csr`
     * `<client_name>.key`
+9. Now that we have generated all the certificates it's time to tell the mosquitto broker where they are. Following 3 entries are important. Edit the configuration file with `sudo gedit /etc/mosquitto/conf.d/mosquitto.conf` and append following 3 lines. 
+ * `cafile /etc/mosquitto/new_certs/ca.crt`
+ * `certfile /etc/mosquitto/new_certs/raspberrypi.crt`
+ * `keyfile /etc/mosquitto/new_certs/raspberrypi.key`
 
 `openssl pkcs12
   -export
